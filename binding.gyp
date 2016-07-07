@@ -116,10 +116,10 @@
     ['OS == "win"', {
       'targets': [
         {
-          # IMPORTANT WINDOWS BUILD INFORMATION
-          # This library does not build on Windows without modifying the Node
+          # IMPORTANT ELECTRON BUILD INFORMATION
+          # This library does not build on OSX for electron without modifying the Node
           # development packages that node-gyp downloads in order to build.
-          # Due to https://github.com/nodejs/node/issues/4932, the headers for
+          # Due to https://github.com/grpc/grpc/issues/6138, the headers for
           # BoringSSL conflict with the OpenSSL headers included by default
           # when including the Node headers. The remedy for this is to remove
           # the OpenSSL headers, from the downloaded Node development package,
@@ -134,11 +134,11 @@
               'outputs': [
                 'ignore_this_part'
               ],
-              'action': ['echo', 'IMPORTANT: Due to https://github.com/nodejs/node/issues/4932, to build this library on Windows, you must first remove <(node_root_dir)/include/node/openssl/']
+              'action': ['echo', 'IMPORTANT: Due to https://github.com/grpc/grpc/issues/6138, to build this library for use with electron, you must first remove <(node_root_dir)/include/node/openssl/']
             }
           ]
         },
-        # Only want to compile BoringSSL and zlib under Windows
+        # We want to compile BoringSSL in OSX for use with Electron
         {
           'cflags': [
             '-std=c99',
@@ -450,35 +450,6 @@
             'third_party/boringssl/ssl/tls_record.c',
           ]
         },
-        {
-          'cflags': [
-            '-std=c99',
-            '-Wall',
-            '-Werror'
-          ],
-          'target_name': 'z',
-          'product_prefix': 'lib',
-          'type': 'static_library',
-          'dependencies': [
-          ],
-          'sources': [
-            'third_party/zlib/adler32.c',
-            'third_party/zlib/compress.c',
-            'third_party/zlib/crc32.c',
-            'third_party/zlib/deflate.c',
-            'third_party/zlib/gzclose.c',
-            'third_party/zlib/gzlib.c',
-            'third_party/zlib/gzread.c',
-            'third_party/zlib/gzwrite.c',
-            'third_party/zlib/infback.c',
-            'third_party/zlib/inffast.c',
-            'third_party/zlib/inflate.c',
-            'third_party/zlib/inftrees.c',
-            'third_party/zlib/trees.c',
-            'third_party/zlib/uncompr.c',
-            'third_party/zlib/zutil.c',
-          ]
-        },
       ]
     }]
   ],
@@ -780,7 +751,10 @@
             'OTHER_CFLAGS': [
               '-stdlib=libc++',
               '-std=c++11'
-            ]
+            ], 
+          'dependencies': [
+            "boringssl",
+          ]
           }
         }],
         ['OS=="win"', {
