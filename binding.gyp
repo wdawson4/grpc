@@ -113,7 +113,7 @@
     ]
   },
   'conditions': [
-    ['OS == "win"', {
+    ['OS == "mac"', {
       'targets': [
         {
           # IMPORTANT ELECTRON BUILD INFORMATION
