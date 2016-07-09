@@ -80,10 +80,11 @@
           # periods and take the first field to get the major version.
         'defines': [
           'TSI_OPENSSL_ALPN_SUPPORT=<!(echo <(target) | cut -d. -f1)',
-          'GPR_BACKWARDS_COMPATIBILITY_MODE'
+          'OPENSSL_NO_ASM'
         ],
         'include_dirs': [
-          '<(node_root_dir)/deps/zlib'
+          "third_party/boringssl/include",
+          "third_party/zlib"
         ],
         'conditions': [
           ['config=="gcov"', {
@@ -744,6 +745,7 @@
             ], 
           'dependencies': [
             "boringssl",
+            "z"
           ]
           }
         }],
